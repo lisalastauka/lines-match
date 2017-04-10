@@ -14,8 +14,8 @@ class View {
         document.getElementById('displayArea').innerHTML = message[messageType];
     }
 
-    renderView () {
-        document.getElementById('submit').addEventListener('click', getFiles);
+    renderView (callback) {
+        document.getElementById('submit').addEventListener('click', callback);
     }
 
     renderResult (data) {
