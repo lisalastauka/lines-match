@@ -3,32 +3,56 @@ const message = {
     noMatch: 'No match!',
     wrongType : 'Only text files supported!'
 };
+const timeOut = 5000;
 
 class View {
 
     getInputFiles() {
-        return [document.getElementById('input').files[0], document.getElementById('pattern').files[0]];
+        return Array.from(document.querySelectorAll('input[type=file]')).map(x=>x.files[0])
     }
 
     displayMessage (messageType) {
-        document.getElementById('displayArea').innerHTML = message[messageType];
+        let messageNode = document.getElementsByClassName('message');
+        if (messageNode.length){
+            messageNode[0].innerHTML = message[messageType]
+        } else {
+            let div = document.createElement('div');
+            div.className = 'message';
+            div.innerHTML = message[messageType];
+            document.body.appendChild(div);
+            setTimeout(function() {
+                div.parentNode.removeChild(div)
+            }, timeOut)
+        }
+    }
+
+    static clearMessage () {
+        let messageNode = document.getElementsByClassName('message');
+        if (messageNode.length){
+            messageNode[0].innerHTML = ''
+        }
     }
 
     renderView (callback) {
-        document.getElementById('submit').addEventListener('click', callback);
+        document.getElementById('submit').addEventListener('click', callback)
     }
 
     renderResult (data) {
-        document.getElementById('result').innerHTML = `
-        <h3>Mode 1</h3>
-        <div id = "mode1"></div>
-        <h3>Mode 2</h3>
-        <div id = "mode2"></div>
-        <h3>Mode 3</h3>
-        <div id = "mode3"></div>
-        `
-        document.getElementById('mode1').innerHTML = data.intersection;
-        document.getElementById('mode2').innerHTML = data.partial;
-        document.getElementById('mode3').innerHTML = data.similar;
+        View.clearMessage();
+        let ol = document.createElement('ol');
+        for (let mode in data) {
+            let li = document.createElement('li');
+            li.innerHTML = data[mode];
+            ol.appendChild(li)
+        }
+        let resultNode = document.getElementsByClassName('resultContainer');
+        if (resultNode.length){
+            resultNode[0].remove()
+        }
+        let container =  document.createElement('div');
+        container.className = 'resultContainer';
+        container.appendChild(ol);
+        document.body.appendChild(container)
+
     }
 }

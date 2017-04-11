@@ -1,1 +1,1 @@
-const app = new App();
+new App();
