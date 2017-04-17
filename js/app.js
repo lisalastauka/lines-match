@@ -12,24 +12,19 @@ class App {
             return;
         }
         return reader.readFiles(files)
-            .then(parsedFiles => {
-                return fileMatch.compareFiles(parsedFiles);
-            })
-            .then(data => {
-                view.render({mode: data});
-            }).catch(err =>
+            .then(parsedFiles =>
+                fileMatch.compareFiles(parsedFiles)
+            )
+            .then(data =>
+                view.render({mode: data})
+            )
+            .catch(err =>
                 view.render({message: err})
             );
     }
 
     static validateFiles(files) {
-        if (files.some(el => !el)) {
-            return false;
-        }
-        if (files.some(el => !el.type.match(textType))) {
-            return false;
-        }
-        return true;
+        return !(files.some(el => !el || !el.type.match(textType)));
     }
 
     static getFiles(form) {
