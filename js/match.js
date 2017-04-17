@@ -1,12 +1,20 @@
 class Match {
 
-    intersection(input, pattern) {
+    getMatch(input, pattern) {
+        return {
+            intersection: Match.intersection(input, pattern),
+            partial: Match.partial(input, pattern),
+            similar: Match.similar(input, pattern)
+        };
+    }
+
+    static intersection(input, pattern) {
         return input.filter(
                 el => pattern.includes(el)
         );
     }
 
-    partial(input,pattern) {
+    static partial(input,pattern) {
         return input.filter(
                 el => pattern.some( exp => el.includes(exp))
         );
@@ -17,7 +25,7 @@ class Match {
         return l.distance;
     }
 
-    similar(input,pattern) {
+    static similar(input,pattern) {
         return input.filter(
                 el =>  pattern.some( exp => Match.levenstein(el, exp) <= 1)
         );
