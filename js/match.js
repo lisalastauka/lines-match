@@ -1,6 +1,6 @@
 class Match {
 
-    getMatch(input, pattern) {
+    static getMatch(input, pattern) {
         return {
             intersection: Match.intersection(input, pattern),
             partial: Match.partial(input, pattern),
