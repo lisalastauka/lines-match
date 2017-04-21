@@ -7,8 +7,12 @@ class App {
     findPatterns(id) {
         const form = document.getElementById(id);
 
-        const inputPromise = TextFile.readFile(form['input'].files[0]);
-        const patternsPromise = TextFile.readFile(form['patterns'].files[0]);
+        const readFile = (fieldName) =>{
+            return TextFile.readFile(form[fieldName].files[0])
+        };
+
+        const inputPromise = readFile('input');
+        const patternsPromise = readFile('patterns');
 
         return Promise.all([inputPromise, patternsPromise])
             .then(([input, patterns]) => {

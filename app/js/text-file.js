@@ -27,6 +27,8 @@ class TextFile {
             };
 
             reader.readAsText(file);
+        }).catch(error => {
+            return error;
         });
     }
 
